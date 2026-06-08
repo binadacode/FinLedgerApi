@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" fill="none" font-family="JetBrains Mono, Consolas, monospace">
+  <rect width="800" height="400" rx="12" fill="#0d1117"/>
+  
+  <!-- Client -->
+  <rect x="40" y="150" width="140" height="80" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text x="110" y="180" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="600">Client</text>
+  <text x="110" y="200" text-anchor="middle" fill="#8b949e" font-size="10">curl / Postman</text>
+  <text x="110" y="215" text-anchor="middle" fill="#8b949e" font-size="10">Any HTTP client</text>
+
+  <!-- Arrow 1 -->
+  <line x1="180" y1="190" x2="260" y2="190" stroke="#30363d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="182" text-anchor="middle" fill="#8b949e" font-size="9">HTTP</text>
+
+  <!-- Minimal API Layer -->
+  <rect x="260" y="100" width="200" height="200" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="360" y="125" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="600">Minimal API (.NET 9)</text>
+  
+  <rect x="275" y="140" width="170" height="32" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="360" y="160" text-anchor="middle" fill="#7ee787" font-size="10">POST /accounts</text>
+
+  <rect x="275" y="180" width="170" height="32" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="360" y="200" text-anchor="middle" fill="#7ee787" font-size="10">POST /transactions</text>
+
+  <rect x="275" y="220" width="170" height="32" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="360" y="240" text-anchor="middle" fill="#7ee787" font-size="10">GET /accounts/{id}/stmt</text>
+
+  <rect x="275" y="260" width="170" height="32" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="360" y="280" text-anchor="middle" fill="#7ee787" font-size="10">GET /accounts</text>
+
+  <!-- Arrow 2 -->
+  <line x1="460" y1="190" x2="540" y2="190" stroke="#30363d" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="500" y="182" text-anchor="middle" fill="#8b949e" font-size="9">EF Core</text>
+
+  <!-- DbContext -->
+  <rect x="540" y="130" width="180" height="140" rx="8" fill="#161b22" stroke="#d2a8ff" stroke-width="1.5"/>
+  <text x="630" y="155" text-anchor="middle" fill="#d2a8ff" font-size="13" font-weight="600">LedgerDbContext</text>
+  
+  <rect x="555" y="170" width="150" height="28" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="630" y="188" text-anchor="middle" fill="#e6edf3" font-size="10">Accounts DbSet</text>
+
+  <rect x="555" y="206" width="150" height="28" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="630" y="224" text-anchor="middle" fill="#e6edf3" font-size="10">Transactions DbSet</text>
+
+  <rect x="555" y="242" width="150" height="28" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="630" y="260" text-anchor="middle" fill="#e6edf3" font-size="10">Entries (computed)</text>
+
+  <!-- InMemory box -->
+  <rect x="590" y="310" width="80" height="36" rx="6" fill="#1c2128" stroke="#f0883e"/>
+  <text x="630" y="333" text-anchor="middle" fill="#f0883e" font-size="10" font-weight="600">InMemory</text>
+  <line x1="630" y1="270" x2="630" y2="310" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4"/>
+
+  <!-- Arrow from client back -->
+  <line x1="260" y1="220" x2="180" y2="220" stroke="#30363d" stroke-width="1" stroke-dasharray="4"/>
+  <text x="220" y="236" text-anchor="middle" fill="#8b949e" font-size="9">JSON</text>
+
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" fill="#e6edf3" font-size="18" font-weight="700">FinLedgerApi — Architecture</text>
+  <text x="400" y="60" text-anchor="middle" fill="#8b949e" font-size="11">Double-entry micro-ledger with .NET 9 Minimal APIs</text>
+
+  <!-- Test badge -->
+  <rect x="280" y="360" width="240" height="28" rx="14" fill="#1c2128" stroke="#7ee787"/>
+  <text x="400" y="379" text-anchor="middle" fill="#7ee787" font-size="11">8/8 integration tests passing</text>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#30363d"/>
+    </marker>
+  </defs>
+</svg>

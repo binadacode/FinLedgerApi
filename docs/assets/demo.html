@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FinLedgerApi — Live Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'JetBrains Mono', 'Consolas', monospace; min-height: 100vh; }
+  
+  .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+  
+  h1 { color: #58a6ff; font-size: 22px; margin-bottom: 6px; }
+  .subtitle { color: #8b949e; font-size: 13px; margin-bottom: 32px; }
+  
+  .demo-step {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .demo-step .header {
+    padding: 10px 16px;
+    background: #1c2128;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .demo-step .header .method {
+    background: #238636;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .demo-step .header .method.get { background: #1f6feb; }
+  .demo-step .header .method.post { background: #238636; }
+  .demo-step .header .endpoint { color: #e6edf3; font-size: 13px; }
+  .demo-step .header .status {
+    margin-left: auto;
+    color: #7ee787;
+    font-size: 11px;
+  }
+  .demo-step .desc {
+    padding: 10px 16px;
+    color: #8b949e;
+    font-size: 12px;
+    border-bottom: 1px solid #21262d;
+  }
+  .demo-step pre {
+    padding: 14px 16px;
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .demo-step pre .key { color: #79c0ff; }
+  .demo-step pre .str { color: #a5d6ff; }
+  .demo-step pre .num { color: #f0883e; }
+  .demo-step pre .bool { color: #ff7b72; }
+  
+  .terminal {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .terminal .bar {
+    padding: 8px 14px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    gap: 6px;
+  }
+  .terminal .bar span { width: 10px; height: 10px; border-radius: 50%; }
+  .terminal .bar span:nth-child(1) { background: #f85149; }
+  .terminal .bar span:nth-child(2) { background: #f0883e; }
+  .terminal .bar span:nth-child(3) { background: #7ee787; }
+  .terminal .bar .title { margin-left: 10px; color: #8b949e; font-size: 11px; align-self: center; }
+  .terminal pre {
+    padding: 14px 16px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .terminal .prompt { color: #7ee787; }
+  .terminal .cmd { color: #e6edf3; }
+  .terminal .output { color: #8b949e; }
+  .terminal .highlight { color: #f0883e; }
+
+  .section-title {
+    color: #58a6ff;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 28px 0 14px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #21262d;
+  }
+
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #1f6feb;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>FinLedgerApi</h1>
+  <p class="subtitle">Double-entry micro-ledger — live API walkthrough</p>
+
+  <div class="section-title"><span class="step-number">1</span>&nbsp; Create Accounts</div>
+  
+  <div class="terminal">
+    <div class="bar"><span></span><span></span><span></span><span class="title">bash</span></div>
+    <pre><span class="prompt">$</span> <span class="cmd">curl -s localhost:5000/accounts -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"Cash","accountType":"Asset"}'</span>
+
+<span class="output">{</span>
+  <span class="key">"id"</span>: <span class="num">1</span>,
+  <span class="key">"name"</span>: <span class="str">"Cash"</span>,
+  <span class="key">"accountType"</span>: <span class="str">"Asset"</span>,
+  <span class="key">"createdAt"</span>: <span class="str">"2026-06-08T08:39:15Z"</span>
+<span class="output">}</span></pre>
+  </div>
+
+  <div class="section-title"><span class="step-number">2</span>&nbsp; Post Transactions (Double-Entry)</div>
+
+  <div class="terminal">
+    <div class="bar"><span></span><span></span><span></span><span class="title">bash</span></div>
+    <pre><span class="prompt">$</span> <span class="cmd">curl -s localhost:5000/transactions -X POST \
+  -d '{"debitAccountId":1,"creditAccountId":2,
+       "amount":1000,"description":"Initial deposit",
+       "transactionType":"Credit"}'</span>
+
+<span class="output">→ Creates entry on Account 1 (debit: 1000)</span>
+<span class="output">→ Creates entry on Account 2 (credit: 1000)</span>
+<span class="output">→ Both sides balanced. Ledger integrity maintained.</span></pre>
+  </div>
+
+  <div class="section-title"><span class="step-number">3</span>&nbsp; View Account Statement (Running Balance)</div>
+
+  <div class="terminal">
+    <div class="bar"><span></span><span></span><span></span><span class="title">bash</span></div>
+    <pre><span class="prompt">$</span> <span class="cmd">curl -s localhost:5000/accounts/1/statement</span>
+
+<span class="output">{</span>
+  <span class="key">"id"</span>: <span class="num">1</span>,
+  <span class="key">"name"</span>: <span class="str">"Cash"</span>,
+  <span class="key">"entries"</span>: [
+    { <span class="key">"amount"</span>: <span class="num">1000</span>, <span class="key">"type"</span>: <span class="str">"Credit"</span>, <span class="highlight">"runningBalance"</span>: <span class="num">1000</span> },
+    { <span class="key">"amount"</span>: <span class="num">250</span>,  <span class="key">"type"</span>: <span class="str">"Debit"</span>,  <span class="highlight">"runningBalance"</span>: <span class="num">750</span> }
+  ]
+<span class="output">}</span></pre>
+  </div>
+
+  <div class="section-title"><span class="step-number">4</span>&nbsp; Net Balances Across Accounts</div>
+
+  <div class="terminal">
+    <div class="bar"><span></span><span></span><span></span><span class="title">bash</span></div>
+    <pre><span class="prompt">$</span> <span class="cmd">curl -s localhost:5000/accounts</span>
+
+<span class="output">[
+  { "id": 1, "name": "Cash",     "accountType": "Asset",    <span class="highlight">"netBalance": 750</span> },
+  { "id": 2, "name": "Revenue",  "accountType": "Revenue",  <span class="highlight">"netBalance": 0</span> },
+  { "id": 3, "name": "Savings",  "accountType": "Asset",    <span class="highlight">"netBalance": 0</span> }
+]</span></pre>
+  </div>
+
+  <div class="section-title">Validation</div>
+
+  <div class="terminal">
+    <div class="bar"><span></span><span></span><span></span><span class="title">bash</span></div>
+    <pre><span class="prompt">$</span> <span class="cmd">curl -s localhost:5000/transactions -X POST \
+  -d '{"debitAccountId":999,"creditAccountId":2,"amount":100}'</span>
+
+<span class="output">"Account 999 not found."</span>
+
+<span class="prompt">$</span> <span class="cmd">curl -s localhost:5000/transactions -X POST \
+  -d '{"debitAccountId":1,"creditAccountId":1,"amount":100}'</span>
+
+<span class="output">"Debit and credit accounts must be different."</span></pre>
+  </div>
+
+</div>
+</body>
+</html>
