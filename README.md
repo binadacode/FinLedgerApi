@@ -39,7 +39,7 @@ Most demo APIs treat financial operations as simple CRUD. Real accounting system
                            └──────────────────────────┘
 ```
 
-See [architecture.svg](docs/assets/architecture.svg) for the full diagram.
+![Architecture](docs/assets/architecture.png)
 
 ## Tech Stack
 
